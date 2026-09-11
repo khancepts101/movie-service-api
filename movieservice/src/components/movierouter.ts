@@ -10,6 +10,7 @@ class MovieRouter{
     getRouter(): ExpressRouter{
         const router = Router();
         router.route('/').get(this.movieController.getMovies);
+        router.route("/:movieId").get(this.movieController.getMovieDetails);
         return router
     }
 }
