@@ -68,6 +68,7 @@ curl -sS 'http://localhost:3000/movies'
   }
 }
 ```
+![List movies request returning page 1](image.png)
 
 ### List movies on page 2
 
@@ -94,6 +95,7 @@ curl -sS 'http://localhost:3000/movies?page=2'
   }
 }
 ```
+![List movies request returning page 2](image-1.png)
 
 ### List movies by year
 
@@ -120,6 +122,7 @@ curl -sS 'http://localhost:3000/movies?year=1995'
   }
 }
 ```
+![Movies released in 1995](image-2.png)
 
 ### List movies by year in descending order
 
@@ -146,6 +149,7 @@ curl -sS 'http://localhost:3000/movies?year=1995&order=desc'
   }
 }
 ```
+![Movies released in 1995 in descending order](image-3.png)
 
 ### List movies by genre
 
@@ -172,6 +176,7 @@ curl -sS 'http://localhost:3000/movies?genre=Comedy'
   }
 }
 ```
+![Comedy movies](image-4.png)
 
 ### Get movie details
 
@@ -198,6 +203,7 @@ curl -sS 'http://localhost:3000/movies/2'
   }
 }
 ```
+![Movie details including the average rating](image-5.png)
 
 
 ## Tests
