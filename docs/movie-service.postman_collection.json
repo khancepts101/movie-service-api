@@ -1,0 +1,57 @@
+{
+  "info": {
+    "name": "Movie Service API",
+    "description": "Requests for the Movie Service API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ],
+  "item": [
+    {
+      "name": "List Movies",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/movies"
+      }
+    },
+    {
+      "name": "List Movies - Page 2",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/movies?page=2"
+      }
+    },
+    {
+      "name": "Movies by Year",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/movies?year=1995"
+      }
+    },
+    {
+      "name": "Movies by Year - Descending",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/movies?year=1995&order=desc"
+      }
+    },
+    {
+      "name": "Movies by Genre",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/movies?genre=Comedy"
+      }
+    },
+    {
+      "name": "Movie Details",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/movies/2"
+      }
+    }
+  ]
+}
