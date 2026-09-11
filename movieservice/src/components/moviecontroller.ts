@@ -1,7 +1,6 @@
 import type { NextFunction, Request, Response } from "express"
-import MovieService, {
-    type GetMoviesOptions,
-} from "./movieservice.js";
+import MovieService from "./movieservice.js";
+import type { GetMoviesOptions } from "./movietypes.js";
 class MovieController {
     constructor(private readonly movieService: MovieService) { }
 
