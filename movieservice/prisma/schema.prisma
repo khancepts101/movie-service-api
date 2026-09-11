@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model movies {
+  movieId             Int     @id @default(autoincrement())
+  imdbId              String
+  title               String
+  overview            String?
+  productionCompanies String?
+  releaseDate         String?
+  budget              Int?
+  revenue             Int?
+  runtime             Float?
+  language            String?
+  genres              String?
+  status              String?
+}
