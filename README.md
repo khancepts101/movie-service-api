@@ -1,67 +1,211 @@
-# Movie API Code Test
+# Movie Service API
 
-## Pre-requisites
+This REST API is built with TypeScript, Express, Prisma, and SQLite. It is built around a database containing movie data and a database for the ratings for the movies. It supports pagination, filtering by year or genre, chronological sorting, and movie details with ratings.
 
-* An IDE or text editor of your choice
-* [Sqlite3](http://www.sqlitetutorial.net/)
+## Run locally
 
+Requirements:
 
-## Task
-Your task is to create an API on top of a couple different databases.  It should conform to the user stories provided below.  You are free to use whatever language you prefer, however our tech stack features NodeJS, Java and Ruby. If you're comfortable with any of these, try to favor them.  Google and the interwebs are at your disposal.
+- Node.js 20+
+- npm
 
-**The Databases**
-The databases are provided as a SQLite3 database in `db/`.  It does not require any credentials to login.  You can run SQL queries directly against the database using:
+Clone the repository and install dependencies:
 
+```bash
+git clone https://github.com/khancepts101/movie-service-api.git
+cd movie-service-api/movieservice
+npm install
 ```
-sqlite <path to db file>
+
+Create the local environment file:
+
+```bash
+cp .env.example .env
 ```
 
-`.tables` will return a list of available tables and `.schema <table>` will provide the schema.
+Start the API:
 
-## Considerations
-When developing your solution, please consider the following:
+```bash
+npm run dev
+```
 
-* Structure of your endpoints - Can you easily extend the API to support new endpoints as feature requests come in?
-* Quality of your code - Does your code demonstrate the use of design patterns?
-* Testability - Is your code testable?
-* Can your solution be easily configured and deployed?  Consider guidelines from [12 Factor App](http://12factor.net/)
+The service runs at `http://localhost:3000` by default.
+
+## Endpoints
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| GET | `/movies` | List movies, 50 per page |
+| GET | `/movies?page=2` | Select a page |
+| GET | `/movies?year=1995` | Filter by release year, ascending by default |
+| GET | `/movies?year=1995&order=desc` | Filter by year in descending order |
+| GET | `/movies?genre=Comedy` | Filter by genre |
+| GET | `/movies/2` | Get details for a movie |
 
 
-## User Stories
+### List movies
 
-#### List All Movies
-AC:
+```bash
+curl -sS 'http://localhost:3000/movies' 
+```
 
-* An endpoint exists that lists all movies
-* List is paginated: 50 movies per page, the page can be altered with the `page` query params
-* Columns should include: imdb id, title, genres, release date, budget
-* Budget is displayed in dollars
+```json
+{
+  "data": [
+    {
+      "imdbId": "tt0094675",
+      "title": "Ariel",
+      "genres": ["Drama", "Crime"],
+      "releaseDate": "1988-10-21",
+      "budget": "$0.00"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "pageSize": 50,
+    "total": 45430,
+    "totalPages": 909
+  }
+}
+```
 
-#### Movie Details
-AC:
+### List movies on page 2
 
-* An endpoint exists that lists the movie details for a particular movie
-* Details should include: imdb id, title, description, release date, budget, runtime, average rating, genres, original language, production companies
-* Budget should be displayed in dollars
-* Ratings are pulled from the rating database
+```bash
+curl -sS 'http://localhost:3000/movies?page=2' 
+```
 
-#### Movies By Year
-AC:
+```json
+{
+  "data": [
+    {
+      "imdbId": "tt0430051",
+      "title": "The Elementary Particles",
+      "genres": ["Drama", "Romance"],
+      "releaseDate": "2006-02-10",
+      "budget": "$6000000.00"
+    }
+  ],
+  "pagination": {
+    "page": 2,
+    "pageSize": 50,
+    "total": 45430,
+    "totalPages": 909
+  }
+}
+```
 
-* An endpoint exists that will list all movies from a particular year 
-* List is paginated: 50 movies per page, the page can be altered with the `page` query params
-* List is sorted by date in chronological order
-* Sort order can be descending
-* Columns include: imdb id, title, genres, release date, budget
+### List movies by year
 
-#### Movies By Genre
-AC:
+```bash
+curl -sS 'http://localhost:3000/movies?year=1995' 
+```
 
-* An endpoint exists that will list all movies by a genre
-* List is paginated: 50 movies per page, the page can be altered with the `page` query params
-* Columns include: imdb id, title, genres, release date, budget
+```json
+{
+  "data": [
+    {
+      "imdbId": "tt0226168",
+      "title": "Multi-Facial",
+      "genres": ["Drama"],
+      "releaseDate": "1995-01-01",
+      "budget": "$3000.00"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "pageSize": 50,
+    "total": 598,
+    "totalPages": 12
+  }
+}
+```
 
-## Tips
+### List movies by year in descending order
 
-* This is a test of your abilities and not how fast you can crank through random stories.  As such, it is more important to produce well structured code that meets the criteria in the user stories rather than getting all stories done.
-* If you get stuck, please ask someone.  We want to know how you work both as an individual and as part of a team.  You will not lose points for asking for help on something that is unclear or where you are stuck.
+```bash
+curl -sS 'http://localhost:3000/movies?year=1995&order=desc' 
+```
+
+```json
+{
+  "data": [
+    {
+      "imdbId": "tt0114746",
+      "title": "Twelve Monkeys",
+      "genres": ["Science Fiction", "Thriller", "Mystery"],
+      "releaseDate": "1995-12-29",
+      "budget": "$29500000.00"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "pageSize": 50,
+    "total": 598,
+    "totalPages": 12
+  }
+}
+```
+
+### List movies by genre
+
+```bash
+curl -sS 'http://localhost:3000/movies?genre=Comedy'
+```
+
+```json
+{
+  "data": [
+    {
+      "imdbId": "tt0092149",
+      "title": "Shadows in Paradise",
+      "genres": ["Drama", "Comedy"],
+      "releaseDate": "1986-10-16",
+      "budget": "$0.00"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "pageSize": 50,
+    "total": 13176,
+    "totalPages": 264
+  }
+}
+```
+
+### Get movie details
+
+```bash
+curl -sS 'http://localhost:3000/movies/2' 
+```
+
+```json
+{
+  "data": {
+    "imdbId": "tt0094675",
+    "title": "Ariel",
+    "description": "Taisto Kasurinen is a Finnish coal miner whose father has just committed suicide and who is framed for a crime he did not commit. In jail, he starts to dream about leaving the country and starting a new life. He escapes from prison but things don't go as planned...",
+    "releaseDate": "1988-10-21",
+    "budget": "$0.00",
+    "runtime": 69,
+    "averageRating": 3.4,
+    "genres": ["Drama", "Crime"],
+    "originalLanguage": null,
+    "productionCompanies": [
+      "Villealfa Filmproduction Oy",
+      "Finnish Film Foundation"
+    ]
+  }
+}
+```
+
+
+## Tests
+
+```bash
+npm test
+```
+
+## API documentation
+
+- Import [`docs/movie-service.postman_collection.json`](docs/movie-service.postman_collection.json) into Postman.
